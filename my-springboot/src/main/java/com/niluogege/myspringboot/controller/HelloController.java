@@ -1,7 +1,7 @@
 package com.niluogege.myspringboot.controller;
 
 import com.niluogege.myspringboot.model.entity.MybatisLearn;
-import com.niluogege.myspringboot.service.DemoService;
+import com.niluogege.myspringboot.service.MybatisLearnService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class HelloController {
 
     @Resource
-    private DemoService demoService;
+    private MybatisLearnService demoService;
 
     @ApiOperation(value = "desc of method", notes = "")
     @RequestMapping(value = "/index")
@@ -32,5 +32,11 @@ public class HelloController {
         demo.setAge(1);
         demoService.insert(demo);
         return "ok";
+    }
+
+    @ApiOperation(value = "desc of method", notes = "")
+    @RequestMapping(value = "/getAll")
+    public String getAll() {
+        return demoService.getAll().toString();
     }
 }

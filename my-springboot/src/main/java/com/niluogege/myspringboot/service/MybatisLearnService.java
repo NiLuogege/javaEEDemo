@@ -1,16 +1,17 @@
 package com.niluogege.myspringboot.service;
 
-import com.niluogege.myspringboot.mapper.DemoMapper;
+import com.niluogege.myspringboot.mapper.MybatisLearnMapper;
 import com.niluogege.myspringboot.model.entity.MybatisLearn;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
-public class DemoService {
+public class MybatisLearnService {
 
     @Resource
-    private DemoMapper demoMapper;
+    private MybatisLearnMapper demoMapper;
 
 
     /**
@@ -18,5 +19,12 @@ public class DemoService {
      */
     public void insert(MybatisLearn record) {
         demoMapper.insert(record);
+    }
+
+    /**
+     * 获取全部数据
+     */
+    public  List<MybatisLearn> getAll(){
+        return demoMapper.getAll();
     }
 }
