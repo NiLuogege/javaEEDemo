@@ -1,5 +1,6 @@
 package com.niluogege.myspringboot.controller;
 
+import com.niluogege.myspringboot.model.entity.MybatisLearn;
 import com.niluogege.myspringboot.service.DemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,17 +19,18 @@ public class HelloController {
 
     @ApiOperation(value = "desc of method", notes = "")
     @RequestMapping(value = "/index")
-    public String index(){
+    public String index() {
         return "fuck android";
     }
 
     @ApiOperation(value = "desc of method", notes = "")
     @RequestMapping(value = "/addDemo")
-    public String addDemo(){
-//        Demo demo = new Demo();
-//        demo.setName("aa");
-//        demo.setDate(LocalDateTime.now());
-//        return demoService.insert(demo)+"";
-        return "";
+    public String addDemo() {
+        MybatisLearn demo = new MybatisLearn();
+        demo.setName("aa");
+        demo.setCreatetime(LocalDateTime.now());
+        demo.setAge(1);
+        demoService.insert(demo);
+        return "ok";
     }
 }
