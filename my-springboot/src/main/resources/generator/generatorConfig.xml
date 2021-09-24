@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+    <!--执行generator插件生成文件的命令： call mvn mybatis-generator:generate -e -->
+    <!-- 引入配置文件 为了使用里面定义的字段-->
+    <properties resource="application.properties"/>
+    <!-- 一个数据库一个context -->
+    <!--defaultModelType="flat" 大数据字段，不分表 MyBatis3DynamicSql  -->
+    <context id="MysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自动识别数据库关键字，默认false，一般保留默认值，遇到数据库关键字（Java关键字），使用table 元素中columnOverride覆盖;
+         如果设置为true，根据SqlReservedWords中定义的关键字列表，对关键字进行界定(分隔)；参见 beginningDelimiter 和 endingDelimiter 的设置-->
+        <property name="autoDelimitKeywords" value="true"/>
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="utf-8"/>
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <!--lombok plugin-->
+        <plugin type="org.mybatis.generator.plugins.LombokPlugin">
+            <!-- enable annotations -->
+            <property name="builder" value="true"/>
+            <!-- annotation's option(boolean) -->
+            <property name="builder.fluent" value="true"/>
+            <!-- annotation's option(String) -->
+            <property name="builder.builderMethodName" value="myBuilder"/>
+
+            <property name="accessors" value="true"/>
+            <!-- annotation's option(array of String) -->
+            <property name="accessors.prefix" value="m_, _"/>
+
+            <!-- enable annotations -->
+            <property name="allArgsConstructor" value="true"/>
+        </plugin>
+
+        <!-- 自动生成equals方法和hashcode方法 -->
+        <!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+        <!-- 生成的model实现Serializable借口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 该插件给实体类添加toString() -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!--添加@Mapper注解-->
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <!--用于在 Mapper 接口的 selectByExample 方法参数中加入 RowBounds 参数，用于支持分页-->
+        <!--        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>-->
+
+        <!--生成mapper.xml时覆盖原文件-->
+        <!--        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />-->
+        <!-- 注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/><!--  不生成所有注释，默认为 false  -->
+            <property name="suppressDate" value="true"/><!--  生成的注释中不包含时间信息，默认为 false -->
+            <property name="dateFormat" value="yyyy-MM-dd"/><!--  生成的注释中，时间的显示格式 -->
+            <property name="addRemarkComments" value="true"/><!-- 是否添加数据库表中字段的注释，默认为 false  -->
+            <property name="author" value="mybatis-gen"/>
+        </commentGenerator>
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}&amp;tinyInt1isBit=false"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <!--高版本的 mysql-connector-java 需要设置 nullCatalogMeansCurrent=true-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+            <property name="useJSR310Types" value="true" />
+        </javaTypeResolver>
+
+        <!-- 生成实体类的包名和位置 -->
+        <javaModelGenerator targetPackage="com.niluogege.myspringboot.model.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成Mapper.xml文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置-->
+        <!-- "XMLMAPPER"生成xml映射文件, "ANNOTATEDMAPPER" 生成的dao采用注解来写sql -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.niluogege.myspringboot.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- table可以有多个,每个数据库中的表都可以写一个table，tableName表示要匹配的数据库表,也可以在tableName属性中通过使用%通配符来匹配所有数据库表,只有匹配的表才会自动生成文件 -->
+        <!--要生成的表tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <!--        <table tableName="rel_course_school" domainObjectName="CourseSchoolModel">-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+        <table schema="" tableName="e_%" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false" selectByExampleQueryId="false">
+            <!--是否使用实际列名,默认为false-->
+            <property name="useActualColumnNames" value="false"/>
+            <domainObjectRenamingRule searchString="^E" replaceString=""/><!--去掉前缀-->
+        </table>
+
+        <table schema="" tableName="l_%" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false" selectByExampleQueryId="false">
+            <!--是否使用实际列名,默认为false-->
+            <property name="useActualColumnNames" value="false"/>
+            <domainObjectRenamingRule searchString="^L" replaceString=""/><!--去掉前缀-->
+        </table>
+
+        <table schema="" tableName="demo" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false" selectByExampleQueryId="false">
+            <!--是否使用实际列名,默认为false-->
+            <property name="useActualColumnNames" value="false"/>
+            <domainObjectRenamingRule searchString="^E" replaceString=""/><!--去掉前缀-->
+        </table>
+    </context>
+</generatorConfiguration>
